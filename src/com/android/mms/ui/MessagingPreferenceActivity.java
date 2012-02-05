@@ -41,6 +41,7 @@ import android.provider.SearchRecentSuggestions;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.mms.MmsConfig;
 import com.android.mms.util.Recycler;
 
 /**
@@ -54,6 +55,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
     public static final String PRIORITY                 = "pref_key_mms_priority";
     public static final String READ_REPORT_MODE         = "pref_key_mms_read_reports";
     public static final String SMS_DELIVERY_REPORT_MODE = "pref_key_sms_delivery_reports";
+    public static final String SMS_TO_MMS_THRESHOLD     = "pref_key_sms_to_mms_threshold";
     public static final String NOTIFICATION_ENABLED     = "pref_key_enable_notifications";
     public static final String NOTIFICATION_VIBRATE     = "pref_key_vibrate";
     public static final String NOTIFICATION_VIBRATE_WHEN= "pref_key_vibrateWhen";
@@ -67,6 +69,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
 
     private Preference mSmsLimitPref;
     private Preference mSmsDeliveryReportPref;
+    private Preference mSmsToMmsThresholdPref;
     private Preference mMmsLimitPref;
     private Preference mMmsDeliveryReportPref;
     private Preference mMmsReadReportPref;
@@ -77,6 +80,11 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
     private Recycler mSmsRecycler;
     private Recycler mMmsRecycler;
     private static final int CONFIRM_CLEAR_SEARCH_HISTORY_DIALOG = 3;
+    
+    private int smsToMmsThresholdMin = 1;  
+    private int smsToMmsThresholdMax = 10;
+    
+    private int defaultSmsToMmsTextThreshold = MmsConfig.getSmsToMmsTextThreshold();
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -86,6 +94,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
         mManageSimPref = findPreference("pref_key_manage_sim_messages");
         mSmsLimitPref = findPreference("pref_key_sms_delete_limit");
         mSmsDeliveryReportPref = findPreference("pref_key_sms_delivery_reports");
+        mSmsToMmsThresholdPref = findPreference("pref_key_sms_to_mms_threshold");
         mMmsDeliveryReportPref = findPreference("pref_key_mms_delivery_reports");
         mMmsReadReportPref = findPreference("pref_key_mms_read_reports");
         mMmsLimitPref = findPreference("pref_key_mms_delete_limit");
@@ -224,6 +233,14 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
                     mMmsRecycler.getMessageMinLimit(),
                     mMmsRecycler.getMessageMaxLimit(),
                     R.string.pref_title_mms_delete).show();
+        } else if (preference == mSmsToMmsThresholdPref) {
+            new NumberPickerDialog(this,
+                    mSmstoMmsThresholdListener,
+                    getSmsToMmsTextThreshold(),
+                    smsToMmsThresholdMin,
+                    smsToMmsThresholdMax,
+                    R.string.pref_title_sms_to_mms_threshold,
+                    R.string.pref_sms_to_mms_threshold).show();
         } else if (preference == mManageSimPref) {
             startActivity(new Intent(this, ManageSimMessages.class));
         } else if (preference == mClearHistoryPref) {
@@ -260,6 +277,24 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
                 mMmsRecycler.setMessageLimit(MessagingPreferenceActivity.this, limit);
                 setMmsDisplayLimit();
             }
+    };
+
+    NumberPickerDialog.OnNumberSetListener mSmstoMmsThresholdListener =
+        new NumberPickerDialog.OnNumberSetListener() {
+            public void onNumberSet(int limit) {
+                setSmstoMmsTextThreshold(limit);
+            }
+    };
+
+    private void setSmstoMmsTextThreshold(int limit) {
+        SharedPreferences.Editor editPrefs = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editPrefs.putInt(SMS_TO_MMS_THRESHOLD, limit);
+        editPrefs.apply();
+    }
+
+    private int getSmsToMmsTextThreshold() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getInt(SMS_TO_MMS_THRESHOLD, defaultSmsToMmsTextThreshold);
     };
 
     @Override

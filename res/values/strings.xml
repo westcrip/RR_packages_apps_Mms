@@ -319,6 +319,8 @@
     <string name="pref_summary_mms_read_reports">Request a read report for each message you send</string>
     <!-- Settings item description for boolean SMS delivery report setting -->
     <string name="pref_summary_sms_delivery_reports">Request a delivery report for each message you send</string>
+    <!-- Settings item description for SMS to MMS threshold setting -->
+    <string name="pref_summary_sms_to_mms_threshold">Threshold before a SMS is converted to a MMS</string>
     <!-- Settings item description for boolean auto-delete messages setting -->
     <string name="pref_summary_auto_delete">Delete old messages as limits are reached</string>
     <!-- Settings item description for integer auto-delete sms message limit -->
@@ -331,6 +333,8 @@
     <string name="pref_title_mms_read_reports">Read reports</string>
     <!-- Settings item for boolean option to enable/disable SMS delivery reports -->
     <string name="pref_title_sms_delivery_reports">Delivery reports</string>
+    <!-- Settings item for integer option to set SMS to MMS threshold -->
+    <string name="pref_title_sms_to_mms_threshold">SMS to MMS threshold</string>    
     <!-- Settings item for boolean option to enable/disable auto-deletion of messages -->
     <string name="pref_title_auto_delete">Delete old messages</string>
     <!-- Settings item for integer option to set SMS delete limit -->
@@ -349,6 +353,8 @@
     <string name="pref_title_notification_ringtone">Choose ringtone</string>
     <!-- Settings item for setting the number of message to save for each conversation -->
     <string name="pref_messages_to_save">Set number of messages to save</string>
+    <!-- Settings item for setting the SMS to MMS threshold -->
+    <string name="pref_sms_to_mms_threshold">Set the number of pages in threshold</string>
 
     <!-- The vibrate notification modes -->
     <string-array name="prefEntries_vibrateWhen">

@@ -25,6 +25,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.android.mms.R;
 
@@ -60,7 +61,22 @@ public class NumberPickerDialog extends AlertDialog implements OnClickListener {
             int rangeMin,
             int rangeMax,
             int title) {
-        this(context, AlertDialog.THEME_HOLO_LIGHT, callBack, number, rangeMin, rangeMax, title);
+        this(context, AlertDialog.THEME_HOLO_LIGHT, callBack, number, rangeMin, rangeMax, title, R.string.pref_messages_to_save);
+    }
+    
+    /**
+     * @param context Parent.
+     * @param callBack How parent is notified.
+     * @param number The initial number.
+     */
+    public NumberPickerDialog(Context context,
+                              OnNumberSetListener callBack,
+                              int number,
+                              int rangeMin,
+                              int rangeMax,
+                              int title,
+                              int message) {
+        this(context, AlertDialog.THEME_HOLO_LIGHT, callBack, number, rangeMin, rangeMax, title, message);
     }
 
     /**
@@ -75,7 +91,8 @@ public class NumberPickerDialog extends AlertDialog implements OnClickListener {
             int number,
             int rangeMin,
             int rangeMax,
-            int title) {
+            int title,
+            int message) {
         super(context, theme);
         mCallback = callBack;
 
@@ -89,6 +106,10 @@ public class NumberPickerDialog extends AlertDialog implements OnClickListener {
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.number_picker_dialog, null);
         setView(view);
+        
+        TextView mTextView = (TextView) view.findViewById(R.id.text_view);
+        mTextView.setText(message);
+        
         mNumberPicker = (NumberPicker) view.findViewById(R.id.number_picker);
 
         // initialize state

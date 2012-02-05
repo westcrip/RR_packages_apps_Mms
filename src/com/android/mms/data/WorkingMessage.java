@@ -58,6 +58,7 @@ import com.android.mms.transaction.MmsMessageSender;
 import com.android.mms.transaction.SmsMessageSender;
 import com.android.mms.ui.AttachmentEditor;
 import com.android.mms.ui.ComposeMessageActivity;
+import com.android.mms.ui.MessagingPreferenceActivity;
 import com.android.mms.ui.MessageUtils;
 import com.android.mms.ui.SlideshowEditor;
 import com.android.mms.util.DraftCache;
@@ -138,6 +139,7 @@ public class WorkingMessage {
 
     // Cached value of mms enabled flag
     private static boolean sMmsEnabled = MmsConfig.getMmsEnabled();
+    private int mSmsToMmsThreshold = MessagingPreferenceActivity.getSmsToMmsTextThreshold();
 
     // Our callback interface
     private final MessageStatusListener mStatusListener;
@@ -437,7 +439,7 @@ public class WorkingMessage {
                 */
                 int msgCount = params[0];
 
-                if (msgCount >= MmsConfig.getSmsToMmsTextThreshold()) {
+                if (msgCount >= mSmsToMmsThreshold) {
                     setLengthRequiresMms(true, false);
                 } else {
                     updateState(HAS_ATTACHMENT, hasAttachment(), true);
