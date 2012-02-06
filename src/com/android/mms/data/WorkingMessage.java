@@ -139,7 +139,7 @@ public class WorkingMessage {
 
     // Cached value of mms enabled flag
     private static boolean sMmsEnabled = MmsConfig.getMmsEnabled();
-    private int mSmsToMmsThreshold = MessagingPreferenceActivity.getSmsToMmsTextThreshold();
+    private int mSmsToMmsThreshold;
 
     // Our callback interface
     private final MessageStatusListener mStatusListener;
@@ -439,6 +439,7 @@ public class WorkingMessage {
                 */
                 int msgCount = params[0];
 
+                mSmsToMmsThreshold = MessagingPreferenceActivity.getSmsToMmsTextThreshold(mActivity.getApplicationContext());
                 if (msgCount >= mSmsToMmsThreshold) {
                     setLengthRequiresMms(true, false);
                 } else {

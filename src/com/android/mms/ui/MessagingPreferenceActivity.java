@@ -84,7 +84,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
     private int smsToMmsThresholdMin = 1;  
     private int smsToMmsThresholdMax = 10;
     
-    private int defaultSmsToMmsTextThreshold = MmsConfig.getSmsToMmsTextThreshold();
+    private static final int defaultSmsToMmsTextThreshold = MmsConfig.getSmsToMmsTextThreshold();
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -236,7 +236,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
         } else if (preference == mSmsToMmsThresholdPref) {
             new NumberPickerDialog(this,
                     mSmstoMmsThresholdListener,
-                    getSmsToMmsTextThreshold(),
+                    getSmsToMmsTextThreshold(this),
                     smsToMmsThresholdMin,
                     smsToMmsThresholdMax,
                     R.string.pref_title_sms_to_mms_threshold,
@@ -292,8 +292,8 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
         editPrefs.apply();
     }
 
-    private int getSmsToMmsTextThreshold() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    public static int getSmsToMmsTextThreshold(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(SMS_TO_MMS_THRESHOLD, defaultSmsToMmsTextThreshold);
     };
 
